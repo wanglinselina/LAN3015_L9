@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【商討解決方案】第九課：應變會議實戰</title>
+    <style>
+        :root { --primary: #0284c7; --secondary: #b45309; --bg: #f8fafc; --white: #ffffff; --text: #334155; }
+        body { font-family: 'Microsoft YaHei', sans-serif; background: var(--bg); margin: 0; padding: 15px; color: var(--text); line-height: 1.6; }
+        .container { max-width: 950px; margin: 0 auto; background: var(--white); border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); overflow: hidden; padding-bottom: 20px; }
+        .header { background: var(--primary); color: var(--white); padding: 25px 20px; text-align: center; }
+        .header h1 { margin: 0; font-size: 1.6em; letter-spacing: 1px; }
+        
+        .section { padding: 20px 25px; border-bottom: 1px solid #e2e8f0; }
+        h2 { color: var(--secondary); border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-top: 0; }
+        
+        .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        label { font-weight: bold; color: #0f172a; margin-bottom: 5px; display: block;}
+        input[type="text"], select, textarea { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 5px; box-sizing: border-box; font-family: inherit; }
+        input[type="text"].fill-in { color: #dc2626; font-weight: bold; border-bottom: 2px solid #dc2626; border-top: none; border-left: none; border-right: none; border-radius: 0; background: transparent; padding: 2px 5px;}
+        textarea { resize: vertical; min-height: 120px; }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2); }
+        
+        .role-selector { background: #f0fdfa; padding: 15px; border-radius: 6px; border: 1px solid #ccfbf1; margin-bottom: 20px; }
+        
+        .task-card { background: #fffbeb; padding: 20px; border-radius: 6px; border: 1px solid #fde68a; margin-bottom: 20px; display: none; line-height: 2;}
+        .task-card h3 { color: #b45309; margin-top: 0; border-bottom: 1px dashed #fcd34d; padding-bottom: 10px;}
+        
+        .btn-export { display: block; width: 100%; margin: 20px auto 0; padding: 15px; background-color: var(--primary); color: white; border: none; border-radius: 5px; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: background 0.3s; }
+        .btn-export:hover { background-color: #0369a1; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>🚨 【突發狀況】商討解決方案應變會議</h1>
+        <p>第九課：資料分析、商討對策與表決技巧</p>
+    </div>
+
+    <div class="section">
+        <div class="grid-2col">
+            <div><label>組別：</label><input type="text" id="groupName" placeholder="例如：第 3 組"></div>
+            <div><label>學生姓名：</label><input type="text" id="studentName" placeholder="輸入你的姓名"></div>
+        </div>
+    </div>
+
+    <!-- 步驟一：選擇角色與填空 -->
+    <div class="section">
+        <h2>📝 步驟一：分析資料卡與填寫提案重點</h2>
+        <div class="role-selector">
+            <label>請選擇你抽籤到的角色：</label>
+            <select id="roleSelect" onchange="showTaskCard()">
+                <option value="">-- 點擊選擇角色 --</option>
+                <option value="chen">陳達志 (會議主席 / 採購部主任)</option>
+                <option value="zhang">張緯翎 (與會者 / 採購部主任)</option>
+                <option value="wang">王芷君 (與會者 / 採購部主任)</option>
+                <option value="xie">謝芝婷 (與會者 / 採購部助理)</option>
+                <option value="huang">黃宜恩 (與會者 / 秘書)</option>
+            </select>
+        </div>
+
+        <!-- 任務卡填空區 (根據角色動態顯示) -->
+        
+        <!-- 陳達志 -->
+        <div id="task-chen" class="task-card">
+            <h3>👤 主席 - 陳達志 (你的提案重點)</h3>
+            <p><strong>1. 歡迎晚宴：</strong> 建議取消皇后酒家，改訂 <input type="text" class="fill-in" id="c_q1" placeholder="填寫地點" style="width:150px;">。<br>
+            原因：食物中毒事件不宜冒險。有貴賓廳，可預訂 <input type="text" class="fill-in" id="c_q2" placeholder="填寫級別" style="width:100px;"> ；沒超出預算 (<input type="text" class="fill-in" id="c_q3" placeholder="價格" style="width:80px;">)。</p>
+            
+            <p><strong>2. 酒店安排：</strong> 建議加訂一晚 <input type="text" class="fill-in" id="c_q4" placeholder="填寫酒店" style="width:180px;">。<br>
+            原因：10/5晚有足夠客房，位於銅鑼灣，方便換酒店。價格為 <input type="text" class="fill-in" id="c_q5" placeholder="價格" style="width:80px;">。如取消富豪酒店，需付房價 <input type="text" class="fill-in" id="c_q6" placeholder="百分比" style="width:60px;">。</p>
+
+            <p><strong>3. 日間行程：</strong> 建議 <input type="text" class="fill-in" id="c_q7" placeholder="不變 / 更改" style="width:80px;">。<br>
+            原因：室內活動選擇多，天氣惡劣影響不大。提醒賓客帶 <input type="text" class="fill-in" id="c_q8" placeholder="物品" style="width:80px;">。</p>
+
+            <p><strong>4. 歡送晚宴：</strong> 建議延遲 <input type="text" class="fill-in" id="c_q9" placeholder="時數" style="width:60px;">，<input type="text" class="fill-in" id="c_q10" placeholder="時間" style="width:60px;"> 開始。<br>
+            原因：原定太早，現在離港航班改為 11/5 早上，時間可以推遲。</p>
+        </div>
+
+        <!-- 張緯翎 -->
+        <div id="task-zhang" class="task-card">
+            <h3>👤 與會者 - 張緯翎 (你的提案重點)</h3>
+            <p><strong>1. 歡迎晚宴：</strong> 建議改訂 <input type="text" class="fill-in" id="z_q1" placeholder="地點" style="width:150px;">。<br>
+            原因：不宜冒險。有貴賓廳，口碑好，價錢合理 (<input type="text" class="fill-in" id="z_q2" placeholder="價格" style="width:80px;">)。可步行至 <input type="text" class="fill-in" id="z_q3" placeholder="景點" style="width:120px;">。</p>
+            
+            <p><strong>2. 酒店安排：</strong> 建議加訂一晚 <input type="text" class="fill-in" id="z_q4" placeholder="酒店" style="width:180px;">。<br>
+            原因：10/5晚有客房，位於銅鑼灣。價格為 <input type="text" class="fill-in" id="z_q5" placeholder="價格" style="width:80px;">，價格便宜。</p>
+
+            <p><strong>3. 日間行程：</strong> 建議 <input type="text" class="fill-in" id="z_q6" placeholder="狀態" style="width:80px;">。<br>
+            原因：專車接送往返園區。室內活動多。午飯後：<input type="text" class="fill-in" id="z_q7" placeholder="行程" style="width:100px;">。</p>
+
+            <p><strong>4. 歡送晚宴：</strong> 建議推後 1.5 小時，<input type="text" class="fill-in" id="z_q8" placeholder="時間" style="width:60px;"> 開始。<br>
+            原因：1700 太早。推遲後有更多時間 <input type="text" class="fill-in" id="z_q9" placeholder="活動" style="width:150px;">。</p>
+        </div>
+
+        <!-- 王芷君 -->
+        <div id="task-wang" class="task-card">
+            <h3>👤 與會者 - 王芷君 (你的提案重點)</h3>
+            <p><strong>1. 歡迎晚宴：</strong> 建議 <input type="text" class="fill-in" id="w_q1" placeholder="不變 / 更改" style="width:80px;">。<br>
+            原因：食物中毒只是懷疑個案。皇后酒家已 <input type="text" class="fill-in" id="w_q2" placeholder="採取行動" style="width:150px;">，更安全。</p>
+            
+            <p><strong>2. 酒店安排：</strong> 建議取消富豪，改訂 <input type="text" class="fill-in" id="w_q3" placeholder="酒店" style="width:150px;">。<br>
+            原因：換酒店太麻煩，影響 <input type="text" class="fill-in" id="w_q4" placeholder="形象" style="width:80px;">。該酒店 8/5-10/5 皆有客房，價格 <input type="text" class="fill-in" id="w_q5" placeholder="價格" style="width:80px;">/晚。</p>
+
+            <p><strong>3. 日間行程：</strong> 建議 <input type="text" class="fill-in" id="w_q6" placeholder="狀態" style="width:80px;">。<br>
+            原因：其他熱門景點如 <input type="text" class="fill-in" id="w_q7" placeholder="列舉景點" style="width:180px;"> 更不宜於天氣惡劣下遊覽。下午可去 <input type="text" class="fill-in" id="w_q8" placeholder="地點" style="width:100px;"> 購物。</p>
+
+            <p><strong>4. 歡送晚宴：</strong> 建議延遲 1.5 小時，<input type="text" class="fill-in" id="w_q9" placeholder="時間" style="width:60px;"> 開始。<br>
+            原因：1700 吃晚飯，<input type="text" class="fill-in" id="w_q10" placeholder="原因" style="width:100px;">。</p>
+        </div>
+
+        <!-- 謝芝婷 -->
+        <div id="task-xie" class="task-card">
+            <h3>👤 與會者 - 謝芝婷 (你的提案重點)</h3>
+            <p><strong>1. 歡迎晚宴：</strong> 建議改訂 <input type="text" class="fill-in" id="x_q1" placeholder="地點" style="width:180px;">。<br>
+            原因：小心為上，價格合理 (<input type="text" class="fill-in" id="x_q2" placeholder="價格" style="width:80px;">)。在酒店內用膳，免 <input type="text" class="fill-in" id="x_q3" placeholder="形容詞" style="width:100px;">。</p>
+            
+            <p><strong>2. 酒店安排：</strong> 建議加訂一晚 <input type="text" class="fill-in" id="x_q4" placeholder="酒店" style="width:150px;">。<br>
+            原因：10/5 有客房。位置靠近機場，方便第二天早上登機。有酒店專車從 <input type="text" class="fill-in" id="x_q5" placeholder="地點" style="width:120px;"> 送客人。價格 <input type="text" class="fill-in" id="x_q6" placeholder="價格" style="width:80px;">。</p>
+
+            <p><strong>3. 日間行程：</strong> 建議改往 <input type="text" class="fill-in" id="x_q7" placeholder="景點" style="width:150px;">。<br>
+            原因：內地遊客熱門景點之一，鄰近 <input type="text" class="fill-in" id="x_q8" placeholder="地點" style="width:150px;">，方便往返。</p>
+
+            <p><strong>4. 歡送晚宴：</strong> 建議改在 <input type="text" class="fill-in" id="x_q9" placeholder="地點" style="width:180px;">。<br>
+            原因：沒超出預算 (<input type="text" class="fill-in" id="x_q10" placeholder="價格" style="width:80px;">)。鄰近機場酒店，方便往返。時間延遲至 1830 開始。</p>
+        </div>
+
+        <!-- 黃宜恩 -->
+        <div id="task-huang" class="task-card">
+            <h3>👤 與會者 - 黃宜恩 (你的提案重點)</h3>
+            <p><strong>1. 歡迎晚宴：</strong> 建議 <input type="text" class="fill-in" id="h_q1" placeholder="不變 / 更改" style="width:80px;">。<br>
+            原因：傳媒報道有 <input type="text" class="fill-in" id="h_q2" placeholder="形容詞" style="width:100px;"> 之嫌。皇后酒家已有六十年歷史，一直是 <input type="text" class="fill-in" id="h_q3" placeholder="名詞" style="width:100px;">。</p>
+            
+            <p><strong>2. 酒店安排：</strong> 建議加訂一晚 <input type="text" class="fill-in" id="h_q4" placeholder="酒店" style="width:150px;">。<br>
+            原因：10/5 有客房，換酒店不會太麻煩。價格合理 (<input type="text" class="fill-in" id="h_q5" placeholder="價格" style="width:80px;">)。</p>
+
+            <p><strong>3. 日間行程：</strong> 建議改往 <input type="text" class="fill-in" id="h_q6" placeholder="景點" style="width:150px;">。<br>
+            原因：時間充裕可順道遊 <input type="text" class="fill-in" id="h_q7" placeholder="景點" style="width:150px;">。可預訂專車接送，節省換乘時間。</p>
+
+            <p><strong>4. 歡送晚宴：</strong> 建議延遲 1.5 小時，<input type="text" class="fill-in" id="h_q8" placeholder="時間" style="width:60px;"> 開始。<br>
+            原因：1830 開始，可以多點時間 <input type="text" class="fill-in" id="h_q9" placeholder="活動" style="width:150px;">。</p>
+        </div>
+    </div>
+
+    <!-- 步驟二：草擬發言稿 -->
+    <div class="section">
+        <h2>🗣️ 步驟二：草擬會議實戰發言稿</h2>
+        <p style="font-size: 0.9em; color: #475569;">請將你剛剛在上方填寫的關鍵字與資料，組織成一段通順的發言稿。注意你的角色，並嘗試加入第九課學到的「表決與總結」等會議語言技巧。</p>
+        <textarea id="finalDraft" placeholder="大家好，針對這次航班取消與天氣變化的突發狀況，我的建議如下：..."></textarea>
+    </div>
+
+    <button class="btn-export" onclick="exportToWord()">📥 完成準備：匯出應變提案 (Word) 準備開會</button>
+</div>
+
+<script>
+    function showTaskCard() {
+        const roles = ['chen', 'zhang', 'wang', 'xie', 'huang'];
+        roles.forEach(r => document.getElementById('task-' + r).style.display = 'none');
+        
+        const selected = document.getElementById('roleSelect').value;
+        if (selected) {
+            document.getElementById('task-' + selected).style.display = 'block';
+        }
+    }
+
+    function exportToWord() {
+        const getVal = (id) => {
+            const el = document.getElementById(id);
+            return el ? (el.value || '未填寫').replace(/\n/g, '<br>') : '';
+        };
+        
+        const gName = getVal('groupName');
+        const sName = getVal('studentName');
+        const roleSelect = document.getElementById('roleSelect');
+        const roleKey = roleSelect.value;
+        
+        if (!roleKey) {
+            alert("⚠️ 請先在上方下拉選單選擇你的角色！");
+            return;
+        }
+        const roleLabel = roleSelect.options[roleSelect.selectedIndex].text;
+        
+        // 抓取該角色填空題的所有答案
+        let fillInText = "";
+        const inputs = document.querySelectorAll(`#task-${roleKey} input.fill-in`);
+        inputs.forEach((input, index) => {
+            const val = input.value || '___';
+            fillInText += `<p>空格 ${index + 1}: <span style="color:#dc2626; font-weight:bold;">${val}</span></p>`;
+        });
+
+        const draft = getVal('finalDraft');
+
+        const htmlContent = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+        <meta charset='utf-8'>
+        <title>商討解決方案提案</title>
+        <style>
+            body { font-family: 'Microsoft YaHei', sans-serif; line-height: 1.6; }
+            h1 { color: #0284c7; text-align: center; border-bottom: 2px solid #0284c7; padding-bottom: 10px; }
+            h2 { color: #b45309; margin-top: 20px; background-color: #f8fafc; padding: 5px; border-left: 5px solid #b45309;}
+            .box { border: 1px solid #cbd5e1; padding: 15px; margin-bottom: 15px; background-color: #fffbeb; }
+            .draft-box { border: 1px solid #cbd5e1; padding: 15px; background-color: #f0fdfa; }
+        </style>
+        </head>
+        <body>
+            <h1>【商討解決方案】個人應變提案稿</h1>
+            <p><strong>組別：</strong> ${gName} &nbsp;&nbsp;&nbsp; <strong>學生姓名：</strong> ${sName}</p>
+            <p><strong>擔任角色：</strong> ${roleLabel}</p>
+            
+            <h2>📝 第一部分：資料分析與重點整理</h2>
+            <div class="box">
+                ${fillInText}
+            </div>
+            
+            <h2>🗣️ 第二部分：會議發言講稿</h2>
+            <div class="draft-box">
+                <p>${draft}</p>
+            </div>
+        </body>
+        </html>
+        `;
+
+        const blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${sName}_${roleLabel}_應變提案.doc`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+</script>
+
+</body>
+</html>
